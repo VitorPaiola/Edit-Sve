@@ -1,6 +1,9 @@
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 
 export default function App() {
+
+  const inputRef = useRef<HTMLInputElement>(null)
+  const firstRender = useRef(true)
 
   const [input, setInput] = useState("")
   const [tasks, setTasks] = useState<string[]>([])
@@ -9,6 +12,26 @@ export default function App() {
     enabled: false,
     task: ""
   })
+
+  useEffect(() => {
+    const tarefaSalvas = localStorage.getItem("@cursoreact")
+
+    if (tarefaSalvas) {
+      setTasks(JSON.parse(tarefaSalvas))
+    }
+
+  }, [])
+
+  useEffect(() => {
+    // Não será mais a 1ª renderização
+    if(firstRender.current) {
+      firstRender.current = false
+      return
+    }
+
+    localStorage.setItem("@cursoreact", JSON.stringify(tasks))
+
+  }, [tasks])
 
   function handleRegister() {
     if (!input) {
@@ -45,6 +68,10 @@ export default function App() {
   }
 
   function handleEdit(item: string) {
+
+    // O ? significa que o (estado atual (current) ) dele pode estar vazio
+    inputRef.current?.focus()
+
     setInput(item)
     setEditTask({
       enabled: true,
@@ -60,6 +87,7 @@ export default function App() {
         placeholder="Digite o nome da tarefa..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
+        ref={inputRef}
       />
       <button onClick={handleRegister}>
         {editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}
