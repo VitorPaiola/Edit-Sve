@@ -1,0 +1,120 @@
+
+import { useState } from "react"
+
+interface UserProps {
+  nome: string
+  cargo: string
+}
+
+export default function App() {
+  const [user, setUser] = useState<UserProps>({
+    nome: "Visitante",
+    cargo: ""
+  })
+
+  function handleLogin() {
+    setUser({
+      nome: "Sujeito Programador",
+      cargo: "Programador"
+    })
+  }
+
+  function handleLogout() {
+    setUser({
+      nome: "Visitante",
+      cargo: ""
+    })
+  }
+
+  return (
+    <div>
+      <h1>Conhecendo useState</h1>
+      <button onClick={handleLogin}>
+        Entrar
+      </button>
+      <button onClick={handleLogout}>
+        Fazer logout
+      </button>
+      <h4>Olá {user.nome}</h4>
+      <strong>{user.cargo}</strong>
+    </div>
+  )
+}
+
+--------------------------------------
+
+import { useState } from "react"
+
+interface InfoAlunosProps {
+  nome: string
+  idade: string
+}
+
+export default function App() {
+  const [input, setInput] = useState("")
+  const [idade, setIdade] = useState("")
+  const [infoAluno, setInfoAluno] = useState<InfoAlunosProps>()
+  const [contador, setContador] = useState<number>(0)
+
+  function mostrarAluno() {
+    setInfoAluno({
+      nome: input,
+      idade: idade
+    })
+  }
+
+  function adicionar() {
+    setContador(valorAtual => valorAtual + 1)
+  }
+
+  function diminuir() {
+    if(contador === 0) {
+      return
+    }
+
+    setContador(valorAtual => valorAtual - 1)
+  }
+
+  return (
+    <div>
+      <h1>Conhecendo useState</h1>
+
+      <input
+        type="text"
+        placeholder="Digite seu nome"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
+
+      <br /><br />
+
+      <input
+        type="text"
+        placeholder="Digite sua idade"
+        value={idade}
+        onChange={(e) => setIdade(e.target.value)}
+      />
+
+      <br /> <br />
+
+      <button onClick={mostrarAluno}>Mostrar aluno</button>
+
+      <hr />
+
+      <h3>Bem-vindo: {infoAluno?.nome}</h3>
+      <h4>Idade: {infoAluno?.idade}</h4>
+
+      <hr />
+
+      <br />
+
+      <h1>Contador com useState</h1>
+
+      <button onClick={adicionar}>+</button> {contador} <button onClick={diminuir}>-</button>
+
+    </div>
+  )
+}
+
+------------------------------
+
