@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useMemo } from "react"
 
 export default function App() {
 
@@ -79,6 +79,11 @@ export default function App() {
     })
   }
 
+  // O useMemo evita a queda de performance
+  const totalTarefas = useMemo(() => {
+    return tasks.length
+  }, [tasks])
+
   return (
     <div>
       <h1>Lista de tarefas</h1>
@@ -92,7 +97,11 @@ export default function App() {
       <button onClick={handleRegister}>
         {editTask.enabled ? "Atualizar tarefa" : "Adicionar tarefa"}
       </button>
+
       <hr />
+
+      <strong>Você tem {totalTarefas} tarefas</strong>
+      <br /> <br />
 
       {tasks.map((item, index) => (
         <section key={index}>
